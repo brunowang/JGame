@@ -1,5 +1,7 @@
 package org.jgame.common.net;
 
+import org.jgame.common.net.msg.Message;
+
 import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelHandlerAdapter;
 import io.netty.channel.ChannelHandlerContext;
@@ -18,6 +20,8 @@ public class ChannelHandler extends ChannelHandlerAdapter {
 		System.out.println("Server :" + msg);
 		String response = "服务器响应：" + msg + "$_";
 		ctx.writeAndFlush(Unpooled.copiedBuffer(response.getBytes()));
+		
+		MsgDispatcher.getInstance().onReceiveMsg(new Message(request));
 	}
 
 	@Override
