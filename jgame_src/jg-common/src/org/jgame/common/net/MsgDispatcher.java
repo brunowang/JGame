@@ -3,11 +3,11 @@ package org.jgame.common.net;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+import org.jgame.common.DelegateMethod;
 import org.jgame.common.net.msg.Message;
 import org.jgame.common.net.msg.MsgFactory;
 import org.jgame.common.net.msg.MsgHandler;
 
-import com.lmax.disruptor.EventHandler;
 import com.lmax.disruptor.RingBuffer;
 import com.lmax.disruptor.YieldingWaitStrategy;
 import com.lmax.disruptor.dsl.Disruptor;
@@ -25,11 +25,12 @@ public class MsgDispatcher {
 	int ringBufferSize = 1024 * 1024;
 	
 	Disruptor<Message> disruptor;
+	MsgHandler msgHandler;
 	
 	public void init() {
 		disruptor = new Disruptor<Message>(factory, ringBufferSize, executor, ProducerType.SINGLE, new YieldingWaitStrategy());
 		// 连接消费事件方法
-		EventHandler<Message> msgHandler = new MsgHandler();
+		msgHandler = new MsgHandler();
 		disruptor.handleEventsWith(msgHandler);
 		// 启动
 		disruptor.start();
@@ -43,10 +44,14 @@ public class MsgDispatcher {
 	    
 		try {
 			Message event = ringBuffer.get(sequence);//获取该序号对应的事件对象；
-		    event.setData(msg.getData());
+			event.copyFrom(msg);
 		} finally{
 		    ringBuffer.publish(sequence);//发布事件；
 		}
+	}
+	
+	public void onRegister(int msgId, DelegateMethod method) {
+		msgHandler.onRegister(msgId, method);
 	}
 	
 	public void onDestroy() {

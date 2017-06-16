@@ -10,9 +10,7 @@ import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioSocketChannel;
 import io.netty.handler.codec.DelimiterBasedFrameDecoder;
-import io.netty.handler.codec.FixedLengthFrameDecoder;
 import io.netty.handler.codec.string.StringDecoder;
-import io.netty.handler.codec.string.StringEncoder;
 
 public class Client {
 
@@ -36,8 +34,8 @@ public class Client {
 		
 		ChannelFuture cf = b.connect("127.0.0.1", 8765).sync();
 		
-		cf.channel().writeAndFlush(Unpooled.wrappedBuffer("bbbb$_".getBytes()));
-		cf.channel().writeAndFlush(Unpooled.wrappedBuffer("cccc$_".getBytes()));
+		cf.channel().writeAndFlush(Unpooled.wrappedBuffer("10001__bruno__123456$_".getBytes()));
+		cf.channel().writeAndFlush(Unpooled.wrappedBuffer("10001__test__654321$_".getBytes()));
 		
 		
 		//等待客户端端口关闭

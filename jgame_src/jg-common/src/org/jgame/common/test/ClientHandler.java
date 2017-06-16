@@ -15,7 +15,7 @@ public class ClientHandler extends ChannelHandlerAdapter{
 	public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
 		try {
 			String response = (String)msg;
-			System.out.println("Client: " + response);
+			System.out.println("resp: " + response);
 		} finally {
 			ReferenceCountUtil.release(msg);
 		}
