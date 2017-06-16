@@ -9,11 +9,11 @@ import com.lmax.disruptor.EventHandler;
 
 public class MsgHandler implements EventHandler<Message> {
 	
-	private Map<Integer, Delegate> delegates = new HashMap<>();
+	private Map<Integer, MsgDelegate> delegates = new HashMap<>();
 	
 	@Override
 	public void onEvent(Message msg, long sequence, boolean endOfBatch) throws Exception {
-		Delegate delegate = delegates.get(msg.getId());
+		MsgDelegate delegate = delegates.get(msg.getId());
 		if (delegate != null) {
 			delegate.doIt(msg.getChannel(), msg);
 		} else {
@@ -22,11 +22,11 @@ public class MsgHandler implements EventHandler<Message> {
 	}
 	
 	public void onRegister(int msgId, DelegateMethod method) {
-		Delegate delegate = delegates.get(msgId);
+		MsgDelegate delegate = delegates.get(msgId);
 		if (delegate != null) {
 			delegate.addMethod(method);
 		} else {
-			delegates.put(msgId, new Delegate(method));
+			delegates.put(msgId, new MsgDelegate(method));
 		}
 	}
 

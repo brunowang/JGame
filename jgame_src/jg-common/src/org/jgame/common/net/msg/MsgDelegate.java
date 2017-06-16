@@ -7,10 +7,10 @@ import org.jgame.common.DelegateMethod;
 
 import io.netty.channel.ChannelHandlerContext;
 
-public class Delegate {
+public class MsgDelegate {
 	private List<DelegateMethod> methods;
 	
-	public Delegate(DelegateMethod method) {
+	public MsgDelegate(DelegateMethod method) {
 		methods = new ArrayList<>();
 		methods.add(method);
 	}
