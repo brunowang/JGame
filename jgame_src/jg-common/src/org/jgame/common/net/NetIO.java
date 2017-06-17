@@ -13,10 +13,9 @@ import io.netty.channel.socket.nio.NioServerSocketChannel;
 import io.netty.handler.codec.DelimiterBasedFrameDecoder;
 import io.netty.handler.codec.string.StringDecoder;
 
-import org.jgame.common.test.ServerHandler;
-
 public class NetIO {
-	public void startNetListen(int port) throws InterruptedException {
+	
+	public void startNetListen(int port) {
 		//1 创建2个线程，一个是负责接收客户端的连接。一个是负责进行数据传输的
 		EventLoopGroup pGroup = new NioEventLoopGroup();
 		EventLoopGroup cGroup = new NioEventLoopGroup();
@@ -36,16 +35,22 @@ public class NetIO {
 				sc.pipeline().addLast(new DelimiterBasedFrameDecoder(1024, buf));
 				//设置字符串形式的解码
 				sc.pipeline().addLast(new StringDecoder());
-				sc.pipeline().addLast(new ServerHandler());
+				sc.pipeline().addLast(new ChannelHandler());
 			}
 		});
 		
-		//4 绑定连接
-		ChannelFuture cf = b.bind(port).sync();
+		try {
+			//4 绑定连接
+			ChannelFuture cf = b.bind(port).sync();
+			//等待服务器监听端口关闭
+			cf.channel().closeFuture().sync();
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			pGroup.shutdownGracefully();
+			cGroup.shutdownGracefully();
+		}
 		
-		//等待服务器监听端口关闭
-		cf.channel().closeFuture().sync();
-		pGroup.shutdownGracefully();
-		cGroup.shutdownGracefully();
 	}
 }

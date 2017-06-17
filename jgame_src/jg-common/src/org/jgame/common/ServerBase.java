@@ -2,7 +2,9 @@ package org.jgame.common;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.Executors;
 
+import org.jgame.common.net.MsgDispatcher;
 import org.jgame.common.net.NetIO;
 
 public abstract class ServerBase {
@@ -11,6 +13,7 @@ public abstract class ServerBase {
 	
 	public void startup() {
 		startNetListener();
+		loadModules();
 	}
 	
 	protected void startNetIO(int port) {
@@ -18,8 +21,12 @@ public abstract class ServerBase {
 			if(port==0)
 				return;
 			
+			MsgDispatcher.getInstance().init();
+			
 			NetIO netio = new NetIO();
-			netio.startNetListen(port);
+			
+			Executors.newSingleThreadExecutor().submit(()->netio.startNetListen(port));
+			
 			netIoArray.add(netio);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -27,4 +34,6 @@ public abstract class ServerBase {
 	}
 	
 	protected abstract void startNetListener();
+	
+	protected abstract void loadModules();
 }

@@ -3,8 +3,6 @@ package org.jgame.common.net.msg;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.jgame.common.DelegateMethod;
-
 import com.lmax.disruptor.EventHandler;
 
 public class MsgHandler implements EventHandler<Message> {
@@ -21,7 +19,7 @@ public class MsgHandler implements EventHandler<Message> {
 		}
 	}
 	
-	public void onRegister(int msgId, DelegateMethod method) {
+	public void onRegister(int msgId, MsgDelegateMethod method) {
 		MsgDelegate delegate = delegates.get(msgId);
 		if (delegate != null) {
 			delegate.addMethod(method);

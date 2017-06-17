@@ -3,7 +3,7 @@ package org.jgame.common.net;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-import org.jgame.common.DelegateMethod;
+import org.jgame.common.net.msg.MsgDelegateMethod;
 import org.jgame.common.net.msg.Message;
 import org.jgame.common.net.msg.MsgFactory;
 import org.jgame.common.net.msg.MsgHandler;
@@ -27,6 +27,7 @@ public class MsgDispatcher {
 	Disruptor<Message> disruptor;
 	MsgHandler msgHandler;
 	
+	@SuppressWarnings("unchecked")
 	public void init() {
 		disruptor = new Disruptor<Message>(factory, ringBufferSize, executor, ProducerType.SINGLE, new YieldingWaitStrategy());
 		// 连接消费事件方法
@@ -50,7 +51,7 @@ public class MsgDispatcher {
 		}
 	}
 	
-	public void onRegister(int msgId, DelegateMethod method) {
+	public void onRegister(int msgId, MsgDelegateMethod method) {
 		msgHandler.onRegister(msgId, method);
 	}
 	

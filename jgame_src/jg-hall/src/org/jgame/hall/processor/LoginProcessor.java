@@ -1,16 +1,16 @@
-package org.jgame.common.test;
+package org.jgame.hall.processor;
 
 import org.jgame.common.net.msg.Message;
+import org.jgame.common.net.msg.MsgProcessor;
 
 import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelHandlerContext;
 
-public class LoginProcessor extends BaseProcessor {
+public class LoginProcessor extends MsgProcessor {
 
 	@Override
-	public BaseProcessor init() {
+	public void register() {
 		this.registerMethod(10001, (ctx, msg)->login(ctx, msg));
-		return this;
 	}
 	
 	private void login(ChannelHandlerContext ctx, Message msg) {
