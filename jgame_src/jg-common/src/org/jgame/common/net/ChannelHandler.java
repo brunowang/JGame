@@ -2,10 +2,10 @@ package org.jgame.common.net;
 
 import org.jgame.common.net.msg.Message;
 
-import io.netty.channel.ChannelHandlerAdapter;
 import io.netty.channel.ChannelHandlerContext;
+import io.netty.channel.ChannelInboundHandlerAdapter;
 
-public class ChannelHandler extends ChannelHandlerAdapter {
+public class ChannelHandler extends ChannelInboundHandlerAdapter {
 
 
 	@Override

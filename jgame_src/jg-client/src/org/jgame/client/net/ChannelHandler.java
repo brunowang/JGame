@@ -1,10 +1,10 @@
 package org.jgame.client.net;
 
-import io.netty.channel.ChannelHandlerAdapter;
 import io.netty.channel.ChannelHandlerContext;
+import io.netty.channel.ChannelInboundHandlerAdapter;
 import io.netty.util.ReferenceCountUtil;
 
-public class ChannelHandler extends ChannelHandlerAdapter{
+public class ChannelHandler extends ChannelInboundHandlerAdapter{
 
 	@Override
 	public void channelActive(ChannelHandlerContext ctx) throws Exception {
