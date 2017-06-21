@@ -22,7 +22,7 @@ public class LoginProcessor extends MsgProcessor {
 	private void login(ChannelHandlerContext ctx, Message msg) {
 		Value data = msg.getData();
 		MessagePack messagePack = new MessagePack();
-		messagePack.register(LoginRequest.class);
+//		messagePack.register(LoginRequest.class);	//LoginRequest有@Message注解,就不需注册了
 		LoginRequest req = null;
 		try {
 			req = new Converter(messagePack, data).read(LoginRequest.class);

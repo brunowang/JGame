@@ -35,7 +35,7 @@ public class Message {
 		this.data = data;
 		
 		MessagePack messagePack = new MessagePack();
-		messagePack.register(MsgData.class);
+//		messagePack.register(MsgData.class);	//MsgData有@Message注解,就不需注册了
 		MsgData msg;
 		try {
 			msg = new Converter(messagePack, data).read(MsgData.class);
