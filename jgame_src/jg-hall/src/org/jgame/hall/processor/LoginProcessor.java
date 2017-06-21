@@ -1,10 +1,16 @@
 package org.jgame.hall.processor;
 
+import io.netty.channel.ChannelHandlerContext;
+
+import java.io.IOException;
+
 import org.jgame.common.net.msg.Message;
 import org.jgame.common.net.msg.MsgProcessor;
-
-import io.netty.buffer.Unpooled;
-import io.netty.channel.ChannelHandlerContext;
+import org.jgame.hall.request.LoginRequest;
+import org.jgame.hall.response.LoginResponse;
+import org.msgpack.MessagePack;
+import org.msgpack.type.Value;
+import org.msgpack.unpacker.Converter;
 
 public class LoginProcessor extends MsgProcessor {
 
@@ -14,12 +20,21 @@ public class LoginProcessor extends MsgProcessor {
 	}
 	
 	private void login(ChannelHandlerContext ctx, Message msg) {
-		String[] params = msg.getData().split("__");
-		System.out.println("msgId:" + params[0]);
-		System.out.println("login request account: " + params[1] + ", pwd:" + params[2]);
+		Value data = msg.getData();
+		MessagePack messagePack = new MessagePack();
+		messagePack.register(LoginRequest.class);
+		LoginRequest req = null;
+		try {
+			req = new Converter(messagePack, data).read(LoginRequest.class);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		System.out.println("msgId:" + req.getMsgId());
+		System.out.println("login request account: " + req.getAccount() + ", pwd:" + req.getPwd());
 		
-		String response = params[1] + " login success!!!$_";
-		ctx.writeAndFlush(Unpooled.copiedBuffer(response.getBytes()));
+		ctx.writeAndFlush(new LoginResponse(200));
+//		String response = req.getAccount() + " login success!!!$_";
+//		ctx.writeAndFlush(Unpooled.copiedBuffer(response.getBytes()));
 	}
 
 }

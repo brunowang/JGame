@@ -8,6 +8,8 @@ public class HallServer extends ServerBase {
 		try {
 			HallServer server = new HallServer();
 			server.startup();
+			
+			System.out.println("startup success...");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

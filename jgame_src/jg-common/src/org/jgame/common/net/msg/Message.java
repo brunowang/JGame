@@ -1,32 +1,47 @@
 package org.jgame.common.net.msg;
 
+import java.io.IOException;
+
 import io.netty.channel.ChannelHandlerContext;
+
+import org.msgpack.MessagePack;
+import org.msgpack.type.Value;
+import org.msgpack.unpacker.Converter;
 
 public class Message {
 	private ChannelHandlerContext channel;
+	private Value data;
 	private int id;
-	private String data;
 	
 	public ChannelHandlerContext getChannel() {
 		return channel;
 	}
+	public Value getData() {
+		return data;
+	}
 	public int getId() {
 		return id;
-	}
-	public String getData() {
-		return data;
 	}
 	
 	public void copyFrom(Message msg) {
 		this.channel = msg.getChannel();
-		this.id = msg.getId();
 		this.data = msg.getData();
+		this.id = msg.getId();
 	}
 	
 	public Message(){}
-	public Message(ChannelHandlerContext channel, String data) {
+	public Message(ChannelHandlerContext channel, Value data) {
 		this.channel = channel;
-		this.id = Integer.parseInt(data.split("__")[0]);
 		this.data = data;
+		
+		MessagePack messagePack = new MessagePack();
+		messagePack.register(MsgData.class);
+		MsgData msg;
+		try {
+			msg = new Converter(messagePack, data).read(MsgData.class);
+			this.id = msg.getMsgId();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 }

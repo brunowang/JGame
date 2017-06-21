@@ -4,6 +4,8 @@ import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 import io.netty.util.ReferenceCountUtil;
 
+import org.msgpack.type.Value;
+
 public class ChannelHandler extends ChannelInboundHandlerAdapter{
 
 	@Override
@@ -14,8 +16,7 @@ public class ChannelHandler extends ChannelInboundHandlerAdapter{
 	@Override
 	public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
 		try {
-			String response = (String)msg;
-			System.out.println("resp: " + response);
+			System.out.println("resp: " + (Value)msg);
 		} finally {
 			ReferenceCountUtil.release(msg);
 		}
