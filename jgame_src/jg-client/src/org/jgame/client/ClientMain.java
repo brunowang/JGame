@@ -32,8 +32,8 @@ public class ClientMain {
 			@Override
 			protected void initChannel(SocketChannel sc) throws Exception {
 				//设置特殊分隔符
-				ByteBuf buf = Unpooled.copiedBuffer("$_".getBytes());
-				sc.pipeline().addLast(new DelimiterBasedFrameDecoder(1024, buf));
+//				ByteBuf buf = Unpooled.copiedBuffer("$_".getBytes());
+//				sc.pipeline().addLast(new DelimiterBasedFrameDecoder(1024, buf));
 				//设置字符串形式的解码
 //				sc.pipeline().addLast(new StringDecoder());
 				sc.pipeline().addLast(new MsgPackEncoder());
