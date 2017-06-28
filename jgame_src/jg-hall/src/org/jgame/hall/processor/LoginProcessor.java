@@ -1,7 +1,5 @@
 package org.jgame.hall.processor;
 
-import io.netty.channel.ChannelHandlerContext;
-
 import java.io.IOException;
 
 import org.jgame.common.net.msg.Message;
@@ -11,6 +9,8 @@ import org.jgame.hall.response.LoginResponse;
 import org.msgpack.MessagePack;
 import org.msgpack.type.Value;
 import org.msgpack.unpacker.Converter;
+
+import io.netty.channel.ChannelHandlerContext;
 
 public class LoginProcessor extends MsgProcessor {
 
@@ -24,10 +24,17 @@ public class LoginProcessor extends MsgProcessor {
 		MessagePack messagePack = new MessagePack();
 //		messagePack.register(LoginRequest.class);	//LoginRequest有@Message注解,就不需注册了
 		LoginRequest req = null;
+		Converter converter = new Converter(messagePack, data);
 		try {
-			req = new Converter(messagePack, data).read(LoginRequest.class);
+			req = converter.read(LoginRequest.class);
 		} catch (IOException e) {
 			e.printStackTrace();
+		} finally {
+			try {
+				converter.close();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
 		}
 		System.out.println("msgId:" + req.getMsgId());
 		System.out.println("login request account: " + req.getAccount() + ", pwd:" + req.getPwd());

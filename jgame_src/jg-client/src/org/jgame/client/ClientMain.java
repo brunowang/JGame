@@ -1,8 +1,11 @@
 package org.jgame.client;
 
+import org.jgame.client.net.ChannelHandler;
+import org.jgame.client.request.LoginRequest;
+import org.jgame.common.net.msg.MsgPackDecoder;
+import org.jgame.common.net.msg.MsgPackEncoder;
+
 import io.netty.bootstrap.Bootstrap;
-import io.netty.buffer.ByteBuf;
-import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelOption;
@@ -10,12 +13,6 @@ import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioSocketChannel;
-import io.netty.handler.codec.DelimiterBasedFrameDecoder;
-
-import org.jgame.client.net.ChannelHandler;
-import org.jgame.client.request.LoginRequest;
-import org.jgame.common.net.msg.MsgPackDecoder;
-import org.jgame.common.net.msg.MsgPackEncoder;
 
 public class ClientMain {
 

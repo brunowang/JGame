@@ -2,11 +2,11 @@ package org.jgame.common.net.msg;
 
 import java.io.IOException;
 
-import io.netty.channel.ChannelHandlerContext;
-
 import org.msgpack.MessagePack;
 import org.msgpack.type.Value;
 import org.msgpack.unpacker.Converter;
+
+import io.netty.channel.ChannelHandlerContext;
 
 public class Message {
 	private ChannelHandlerContext channel;
@@ -37,11 +37,18 @@ public class Message {
 		MessagePack messagePack = new MessagePack();
 //		messagePack.register(MsgData.class);	//MsgData有@Message注解,就不需注册了
 		MsgData msg;
+		Converter converter = new Converter(messagePack, data);
 		try {
-			msg = new Converter(messagePack, data).read(MsgData.class);
+			msg = converter.read(MsgData.class);
 			this.id = msg.getMsgId();
 		} catch (IOException e) {
 			e.printStackTrace();
+		} finally {
+			try {
+				converter.close();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
 		}
 	}
 }
