@@ -13,7 +13,7 @@ public class MsgHandler implements EventHandler<Message> {
 	public void onEvent(Message msg, long sequence, boolean endOfBatch) throws Exception {
 		MsgDelegate delegate = delegates.get(msg.getId());
 		if (delegate != null) {
-			delegate.doIt(msg.getChannel(), msg);
+			delegate.doIt(msg.getSession(), msg);
 		} else {
 			System.out.println("invalid message id:" + msg.getId());
 		}

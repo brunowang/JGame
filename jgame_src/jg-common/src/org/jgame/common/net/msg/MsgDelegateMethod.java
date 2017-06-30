@@ -1,7 +1,5 @@
 package org.jgame.common.net.msg;
 
-import org.jgame.common.net.msg.Message;
+import org.jgame.common.session.PlayerSession;
 
-import io.netty.channel.ChannelHandlerContext;
-
-public interface MsgDelegateMethod { void invoke(ChannelHandlerContext ctx, Message msg); }
+public interface MsgDelegateMethod { void invoke(PlayerSession session, Message msg); }

@@ -1,5 +1,6 @@
 package org.jgame.client.request;
 
+import org.jgame.client.constant.MsgCode;
 import org.jgame.common.net.msg.MsgData;
 import org.msgpack.annotation.Message;
 
@@ -11,7 +12,7 @@ public class LoginRequest extends MsgData {
 	
 	public LoginRequest(){}
 	public LoginRequest(String account, String pwd) {
-		this.setMsgId(10001);
+		this.setMsgId(MsgCode.LOGIN_REQ);
 		
 		this.account = account;
 		this.pwd = pwd;

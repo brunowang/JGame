@@ -3,8 +3,8 @@ package org.jgame.common.net;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-import org.jgame.common.net.msg.MsgDelegateMethod;
 import org.jgame.common.net.msg.Message;
+import org.jgame.common.net.msg.MsgDelegateMethod;
 import org.jgame.common.net.msg.MsgFactory;
 import org.jgame.common.net.msg.MsgHandler;
 

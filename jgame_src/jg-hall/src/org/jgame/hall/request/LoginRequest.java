@@ -1,6 +1,7 @@
 package org.jgame.hall.request;
 
 import org.jgame.common.net.msg.MsgData;
+import org.jgame.hall.constant.MsgCode;
 import org.msgpack.annotation.Message;
 
 @Message
@@ -11,7 +12,7 @@ public class LoginRequest extends MsgData {
 	
 	public LoginRequest(){}
 	public LoginRequest(String account, String pwd) {
-		this.setMsgId(10001);
+		this.setMsgId(MsgCode.LOGIN_REQ);
 		
 		this.account = account;
 		this.pwd = pwd;

@@ -3,7 +3,7 @@ package org.jgame.common.net.msg;
 import java.util.ArrayList;
 import java.util.List;
 
-import io.netty.channel.ChannelHandlerContext;
+import org.jgame.common.session.PlayerSession;
 
 public class MsgDelegate {
 	private List<MsgDelegateMethod> methods;
@@ -17,9 +17,9 @@ public class MsgDelegate {
 		methods.add(method);
 	}
 	
-	public void doIt(ChannelHandlerContext ctx, Message msg) {
+	public void doIt(PlayerSession session, Message msg) {
 		for (MsgDelegateMethod method : methods) {
-			method.invoke(ctx, msg);
+			method.invoke(session, msg);
 		}
 	}
 }

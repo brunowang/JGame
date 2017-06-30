@@ -1,47 +1,31 @@
 package org.jgame.hall.processor;
 
-import java.io.IOException;
-
 import org.jgame.common.net.msg.Message;
 import org.jgame.common.net.msg.MsgProcessor;
+import org.jgame.common.net.msg.MsgSerializer;
+import org.jgame.common.session.PlayerSession;
+import org.jgame.hall.constant.MsgCode;
 import org.jgame.hall.request.LoginRequest;
 import org.jgame.hall.response.LoginResponse;
-import org.msgpack.MessagePack;
-import org.msgpack.type.Value;
-import org.msgpack.unpacker.Converter;
-
-import io.netty.channel.ChannelHandlerContext;
 
 public class LoginProcessor extends MsgProcessor {
 
 	@Override
 	public void register() {
-		this.registerMethod(10001, (ctx, msg)->login(ctx, msg));
+		this.registerMethod(MsgCode.LOGIN_REQ, (session, msg)->login(session, msg));
+		this.registerMethod(MsgCode.LOGOUT_REQ, (session, msg)->logout(session, msg));
 	}
 	
-	private void login(ChannelHandlerContext ctx, Message msg) {
-		Value data = msg.getData();
-		MessagePack messagePack = new MessagePack();
-//		messagePack.register(LoginRequest.class);	//LoginRequest有@Message注解,就不需注册了
-		LoginRequest req = null;
-		Converter converter = new Converter(messagePack, data);
-		try {
-			req = converter.read(LoginRequest.class);
-		} catch (IOException e) {
-			e.printStackTrace();
-		} finally {
-			try {
-				converter.close();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-		}
-		System.out.println("msgId:" + req.getMsgId());
+	private void login(PlayerSession session, Message msg) {
+		LoginRequest req = MsgSerializer.getInstance().read(LoginRequest.class, msg.getData());
+		
 		System.out.println("login request account: " + req.getAccount() + ", pwd:" + req.getPwd());
 		
-		ctx.writeAndFlush(new LoginResponse(200));
-//		String response = req.getAccount() + " login success!!!$_";
-//		ctx.writeAndFlush(Unpooled.copiedBuffer(response.getBytes()));
+		session.sendMsg(new LoginResponse(200));
+	}
+	
+	private void logout(PlayerSession session, Message msg) {
+		System.out.println("just for test...");
 	}
 
 }
