@@ -4,6 +4,7 @@ import org.jgame.common.net.msg.Message;
 import org.jgame.common.net.msg.MsgProcessor;
 import org.jgame.common.net.msg.MsgSerializer;
 import org.jgame.common.session.PlayerSession;
+import org.jgame.hall.constant.ErrorCode;
 import org.jgame.hall.constant.MsgCode;
 import org.jgame.hall.request.LoginRequest;
 import org.jgame.hall.response.LoginResponse;
@@ -21,7 +22,7 @@ public class LoginProcessor extends MsgProcessor {
 		
 		System.out.println("login request account: " + req.getAccount() + ", pwd:" + req.getPwd());
 		
-		session.sendMsg(new LoginResponse(200));
+		session.sendMsg(new LoginResponse(ErrorCode.SUCCESS));
 	}
 	
 	private void logout(PlayerSession session, Message msg) {
