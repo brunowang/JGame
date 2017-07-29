@@ -1,6 +1,6 @@
-package org.jgame.client.response;
+package org.jgame.common.message.login;
 
-import org.jgame.client.constant.MsgCode;
+import org.jgame.common.message.MsgCode;
 import org.jgame.common.net.msg.MsgData;
 import org.msgpack.annotation.Message;
 

@@ -1,4 +1,4 @@
-package org.jgame.client.constant;
+package org.jgame.common.message;
 
 public class MsgCode {
 	public static final int LOGIN_REQ = 10001;

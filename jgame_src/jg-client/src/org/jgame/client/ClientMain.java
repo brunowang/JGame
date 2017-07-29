@@ -1,7 +1,7 @@
 package org.jgame.client;
 
 import org.jgame.client.net.ChannelHandler;
-import org.jgame.client.request.LoginRequest;
+import org.jgame.common.message.login.LoginRequest;
 import org.jgame.common.net.msg.MsgPackDecoder;
 import org.jgame.common.net.msg.MsgPackEncoder;
 

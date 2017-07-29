@@ -1,7 +1,7 @@
-package org.jgame.hall.request;
+package org.jgame.common.message.login;
 
+import org.jgame.common.message.MsgCode;
 import org.jgame.common.net.msg.MsgData;
-import org.jgame.hall.constant.MsgCode;
 import org.msgpack.annotation.Message;
 
 @Message

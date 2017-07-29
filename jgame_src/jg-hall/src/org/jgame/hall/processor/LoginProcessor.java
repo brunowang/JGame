@@ -1,13 +1,13 @@
 package org.jgame.hall.processor;
 
+import org.jgame.common.message.MsgCode;
+import org.jgame.common.message.login.LoginRequest;
+import org.jgame.common.message.login.LoginResponse;
 import org.jgame.common.net.msg.Message;
 import org.jgame.common.net.msg.MsgProcessor;
 import org.jgame.common.net.msg.MsgSerializer;
 import org.jgame.common.session.PlayerSession;
 import org.jgame.hall.constant.ErrorCode;
-import org.jgame.hall.constant.MsgCode;
-import org.jgame.hall.request.LoginRequest;
-import org.jgame.hall.response.LoginResponse;
 
 public class LoginProcessor extends MsgProcessor {
 
