@@ -1,17 +1,17 @@
 package org.jgame.common.net.msg;
 
+import org.jgame.common.net.codec.MsgSerializer;
 import org.jgame.common.session.PlayerSession;
-import org.msgpack.type.Value;
 
 public class Message {
 	private PlayerSession session;
-	private Value data;
+	private Object data;
 	private int id;
 	
 	public PlayerSession getSession() {
 		return session;
 	}
-	public Value getData() {
+	public Object getData() {
 		return data;
 	}
 	public int getId() {
@@ -25,7 +25,7 @@ public class Message {
 	}
 	
 	public Message(){}
-	public Message(PlayerSession session, Value data) {
+	public Message(PlayerSession session, Object data) {
 		this.session = session;
 		this.data = data;
 		MsgData msg = MsgSerializer.getInstance().read(MsgData.class, data);

@@ -1,4 +1,4 @@
-package org.jgame.common.message;
+package org.jgame.common.message.gateway2hall;
 
 public class MsgCode {
 	public static final int LOGIN_REQ = 10001;

@@ -1,11 +1,11 @@
 package org.jgame.hall.processor;
 
-import org.jgame.common.message.MsgCode;
-import org.jgame.common.message.login.LoginRequest;
-import org.jgame.common.message.login.LoginResponse;
+import org.jgame.common.message.gateway2hall.MsgCode;
+import org.jgame.common.message.gateway2hall.login.LoginRequest;
+import org.jgame.common.message.gateway2hall.login.LoginResponse;
+import org.jgame.common.net.codec.MsgSerializer;
 import org.jgame.common.net.msg.Message;
 import org.jgame.common.net.msg.MsgProcessor;
-import org.jgame.common.net.msg.MsgSerializer;
 import org.jgame.common.session.PlayerSession;
 import org.jgame.hall.constant.ErrorCode;
 

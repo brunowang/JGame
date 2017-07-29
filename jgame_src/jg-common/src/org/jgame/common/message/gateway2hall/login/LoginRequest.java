@@ -1,6 +1,6 @@
-package org.jgame.common.message.login;
+package org.jgame.common.message.gateway2hall.login;
 
-import org.jgame.common.message.MsgCode;
+import org.jgame.common.message.gateway2hall.MsgCode;
 import org.jgame.common.net.msg.MsgData;
 import org.msgpack.annotation.Message;
 

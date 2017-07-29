@@ -2,7 +2,6 @@ package org.jgame.common.net;
 
 import org.jgame.common.net.msg.Message;
 import org.jgame.common.session.PlayerSession;
-import org.msgpack.type.Value;
 
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
@@ -24,7 +23,7 @@ public class ChannelHandler extends ChannelInboundHandlerAdapter {
 		if (session == null) {
 			return;
 		}
-		MsgDispatcher.getInstance().onReceiveMsg(new Message(session, (Value)msg));
+		MsgDispatcher.getInstance().onReceiveMsg(new Message(session, msg));
 	}
 
 	@Override

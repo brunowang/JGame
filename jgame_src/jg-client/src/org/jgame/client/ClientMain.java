@@ -1,9 +1,9 @@
 package org.jgame.client;
 
 import org.jgame.client.net.ChannelHandler;
-import org.jgame.common.message.login.LoginRequest;
-import org.jgame.common.net.msg.MsgPackDecoder;
-import org.jgame.common.net.msg.MsgPackEncoder;
+import org.jgame.common.message.gateway2hall.login.LoginRequest;
+import org.jgame.common.net.codec.MsgDecoder;
+import org.jgame.common.net.codec.MsgEncoder;
 
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.ChannelFuture;
@@ -33,8 +33,8 @@ public class ClientMain {
 //				sc.pipeline().addLast(new DelimiterBasedFrameDecoder(1024, buf));
 				//设置字符串形式的解码
 //				sc.pipeline().addLast(new StringDecoder());
-				sc.pipeline().addLast(new MsgPackEncoder());
-				sc.pipeline().addLast(new MsgPackDecoder());
+				sc.pipeline().addLast(new MsgEncoder());
+				sc.pipeline().addLast(new MsgDecoder());
 				sc.pipeline().addLast(new ChannelHandler());
 			}
 		});

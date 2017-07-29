@@ -1,20 +1,18 @@
-package org.jgame.common.net.msg;
+package org.jgame.common.net.codec;
 
 import java.util.List;
-
-import org.msgpack.MessagePack;
 
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.MessageToMessageDecoder;
 
-public class MsgPackDecoder extends MessageToMessageDecoder<ByteBuf> {
+public class MsgDecoder extends MessageToMessageDecoder<ByteBuf> {
 
 	public final int BASE_LENGTH = Integer.BYTES;
 	public final int MAX_LENGTH = 5120;
 	
 	@Override
-	protected void decode(ChannelHandlerContext ctx, ByteBuf msg, List<Object> out) throws Exception {
+	protected void decode(ChannelHandlerContext ctx, ByteBuf msg, List<Object> out) {
 		while (msg.readableBytes() >= BASE_LENGTH) {
 //			System.out.println("MsgPackEncoder decode()");
 			
@@ -30,8 +28,7 @@ public class MsgPackDecoder extends MessageToMessageDecoder<ByteBuf> {
 	        }
 			final byte[] content = new byte[length];
 			msg.readBytes(content);
-			MessagePack msgPack = new MessagePack();
-			out.add(msgPack.read(content));
+			out.add(MsgSerializer.getInstance().read(content));
 		}
 	}
 
