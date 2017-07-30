@@ -1,11 +1,15 @@
 package org.jgame.client;
 
+import java.util.Scanner;
+
+import org.jgame.client.cmd.CmdExecutor;
 import org.jgame.client.net.ChannelHandler;
 import org.jgame.common.message.gateway2hall.login.LoginRequest;
 import org.jgame.common.net.codec.MsgDecoder;
 import org.jgame.common.net.codec.MsgEncoder;
 
 import io.netty.bootstrap.Bootstrap;
+import io.netty.channel.Channel;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelOption;
@@ -16,6 +20,10 @@ import io.netty.channel.socket.nio.NioSocketChannel;
 
 public class ClientMain {
 
+	private static Channel channel;
+	
+	private static CmdExecutor cmdExecutor = new CmdExecutor();
+	
 	public static void main(String[] args) throws Exception {
 		
 		EventLoopGroup group = new NioEventLoopGroup();
@@ -40,20 +48,39 @@ public class ClientMain {
 		});
 		
 		ChannelFuture cf = b.connect("127.0.0.1", 8765).sync();
+		channel = cf.channel();
 		
-		cf.channel().writeAndFlush(new LoginRequest("bruno", "123456"));
-		cf.channel().writeAndFlush(new LoginRequest("bruno2", "654321"));
-		cf.channel().writeAndFlush(new LoginRequest("test", "123456"));
-		cf.channel().writeAndFlush(new LoginRequest("test2", "654321"));
-		Thread.sleep(3000);
-		cf.channel().writeAndFlush(new LoginRequest("test", "123456"));
-		cf.channel().writeAndFlush(new LoginRequest("test2", "654321"));
-//		cf.channel().writeAndFlush(Unpooled.wrappedBuffer("10001__bruno__123456$_".getBytes()));
-//		cf.channel().writeAndFlush(Unpooled.wrappedBuffer("10001__test__654321$_".getBytes()));
+//		testSendMsg();
+		Scanner sc= new Scanner(System.in);
+		while (true) {
+			String cmd = sc.nextLine();
+			if ("quit".equals(cmd)) {
+				break;
+			}
+			cmdExecutor.executeCmd(channel, cmd);
+		}
+		sc.close();
 		
 		//等待客户端端口关闭
-		cf.channel().closeFuture().sync();
+		channel.closeFuture().sync();
 		group.shutdownGracefully();
 		
+	}
+	
+	@SuppressWarnings("unused")
+	private static void testSendMsg() {
+		channel.writeAndFlush(new LoginRequest("bruno", "123456"));
+		channel.writeAndFlush(new LoginRequest("bruno2", "654321"));
+		channel.writeAndFlush(new LoginRequest("test", "123456"));
+		channel.writeAndFlush(new LoginRequest("test2", "654321"));
+		try {
+			Thread.sleep(3000);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+		channel.writeAndFlush(new LoginRequest("test", "123456"));
+		channel.writeAndFlush(new LoginRequest("test2", "654321"));
+//		channel.writeAndFlush(Unpooled.wrappedBuffer("10001__bruno__123456$_".getBytes()));
+//		channel.writeAndFlush(Unpooled.wrappedBuffer("10001__test__654321$_".getBytes()));
 	}
 }

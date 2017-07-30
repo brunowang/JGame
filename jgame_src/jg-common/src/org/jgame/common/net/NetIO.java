@@ -46,7 +46,6 @@ public class NetIO {
 			//等待服务器监听端口关闭
 			cf.channel().closeFuture().sync();
 		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} finally {
 			pGroup.shutdownGracefully();
