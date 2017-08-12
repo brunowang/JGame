@@ -1,33 +1,37 @@
-package org.jgame.common.net;
+package org.jgame.common.module;
 
 import org.jgame.common.net.codec.MsgDecoder;
 import org.jgame.common.net.codec.MsgEncoder;
 
-import io.netty.bootstrap.ServerBootstrap;
+import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.ChannelFuture;
+import io.netty.channel.ChannelInboundHandlerAdapter;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelOption;
 import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
-import io.netty.channel.socket.nio.NioServerSocketChannel;
+import io.netty.channel.socket.nio.NioSocketChannel;
 
-public class NetIO {
+public class ConnectorModule {
+	private static ConnectorModule instance = new ConnectorModule();
+
+	private ConnectorModule() {}
+
+	public static ConnectorModule getInstance() {
+		return instance;
+	}
 	
-	//创建2个线程，一个是负责接收客户端的连接。一个是负责进行数据传输的
-	EventLoopGroup pGroup = new NioEventLoopGroup();
-	EventLoopGroup cGroup = new NioEventLoopGroup();
+	private EventLoopGroup group = new NioEventLoopGroup();
 	
-	public ChannelFuture startNetListen(int port) {
-		
-		//创建服务器辅助类
-		ServerBootstrap b = new ServerBootstrap();
-		b.group(pGroup, cGroup)
-		 .channel(NioServerSocketChannel.class)
-		 .option(ChannelOption.SO_BACKLOG, 1024)
-//		 .option(ChannelOption.SO_SNDBUF, 32*1024)
+	private Bootstrap b = new Bootstrap();
+	
+	public ChannelFuture connect(final String ip, final int port, final ChannelInboundHandlerAdapter handler) {
+		b.group(group)
+		 .channel(NioSocketChannel.class)
+		 .option(ChannelOption.SO_SNDBUF, 32*1024)
 		 .option(ChannelOption.SO_RCVBUF, 32*1024)
-		 .childHandler(new ChannelInitializer<SocketChannel>() {
+		 .handler(new ChannelInitializer<SocketChannel>() {
 			@Override
 			protected void initChannel(SocketChannel sc) throws Exception {
 				//设置特殊分隔符
@@ -37,13 +41,11 @@ public class NetIO {
 //				sc.pipeline().addLast(new StringDecoder());
 				sc.pipeline().addLast(new MsgEncoder());
 				sc.pipeline().addLast(new MsgDecoder());
-				sc.pipeline().addLast(new ChannelHandler());
+				sc.pipeline().addLast(handler);
 			}
 		});
-		
 		try {
-			//绑定连接
-			return b.bind(port).sync();
+			return b.connect(ip, port).sync();
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
@@ -51,7 +53,6 @@ public class NetIO {
 	}
 	
 	public void shutdown() {
-		pGroup.shutdownGracefully();
-		cGroup.shutdownGracefully();
+		group.shutdownGracefully();
 	}
 }

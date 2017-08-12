@@ -13,6 +13,8 @@ public class CmdExecutor {
 			if (checkParams(params, 3)) {
 				channel.writeAndFlush(new LoginRequest(params[1], params[2]));
 			}
+		} else {
+			System.out.println("unknown command");
 		}
 	}
 	
